@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+
+{% block title %}Home - My Portfolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h1 class="display-4 fw-bold mb-3">
+                    Hi, I'm <span class="text-primary">UTTAM KUMAR</span>
+                </h1>
+                <h2 class="h3 mb-4">
+                    <span class="typing-animation" data-text="Full Stack Web Developer"></span>
+                </h2>
+                <p class="lead mb-4">
+                    मैं एक passionate web developer हूँ जो modern technologies के साथ 
+                    amazing websites और applications बनाता हूँ। Python, Flask, और 
+                    JavaScript में expertise के साथ आपके ideas को reality में बदलता हूँ।
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-eye"></i> View My Work
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-envelope"></i> Get In Touch
+                    </a>
+                    <a href="{{ url_for('download_resume') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="row mt-5">
+                    <div class="col-4">
+                        <div class="text-center">
+                            <h3 class="text-primary mb-0">8+</h3>
+                            <small class="text-muted">Projects</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-center">
+                            <h3 class="text-primary mb-0">5+</h3>
+                            <small class="text-muted">Happy Clients</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-center">
+                            <h3 class="text-primary mb-0" id="homeVisitorCount">{{ visitor_count or 0 }}</h3>
+                            <small class="text-muted">Visitors</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 text-center" data-aos="fade-left">
+                <div class="profile-image-container float-animation">
+                    <img src="{{ url_for('static', filename='images/profile.jpg') }}" 
+                         alt="Profile" class="img-fluid rounded-circle shadow-lg profile-image">
+                    <div class="profile-ring"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Down Arrow -->
+    <div class="scroll-down">
+        <a href="#services" class="text-white">
+            <i class="fas fa-chevron-down fa-2x"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-5 bg-#B7CFDC">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold">What I Do</h2>
+            <p class="lead text-muted">मैं जो services provide करता हूँ</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-card text-center h-100">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-code fa-3x text-primary"></i>
+                    </div>
+                    <h4>Web Development</h4>
+                    <p>Responsive और modern websites बनाता हूँ जो सभी devices पर perfectly काम करती हैं।</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-card text-center h-100">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-mobile-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4>Mobile Apps</h4>
+                    <p>Android और cross-platform mobile applications develop करता हूँ।</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-card text-center h-100">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-database fa-3x text-primary"></i>
+                    </div>
+                    <h4>Backend Development</h4>
+                    <p>Powerful backend systems और APIs बनाता हूँ Python और Flask के साथ।</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold">My Skills</h2>
+            <p class="lead text-muted">Technologies में मेरी expertise</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h4 class="mb-4">Technical Skills</h4>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">Python & Flask</span>
+                        <span class="text-muted">90%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" style="width: 90%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">JavaScript</span>
+                        <span class="text-muted">85%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" style="width: 85%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">HTML/CSS</span>
+                        <span class="text-muted">95%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: 95%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">Bootstrap</span>
+                        <span class="text-muted">88%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" style="width: 88%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6" data-aos="fade-left">
+                <h4 class="mb-4">Tools & Platforms</h4>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">Git & GitHub</span>
+                        <span class="text-muted">80%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-dark" style="width: 80%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">SQLite/MySQL</span>
+                        <span class="text-muted">75%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">Figma/Design</span>
+                        <span class="text-muted">70%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-secondary" style="width: 70%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">Linux/Ubuntu</span>
+                        <span class="text-muted">65%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 65%; background: linear-gradient(45deg, #667eea, #764ba2)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Projects Preview -->
+<section class="py-5 bg-#6AABD2">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold">Recent Projects</h2>
+            <p class="lead text-muted">मेरे latest काम की एक झलक</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="project-preview-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <i class="fas fa-globe fa-3x text-white"></i>
+                        </div>
+                    </div>
+                    <div class="project-info p-4">
+                        <h5>Portfolio Website</h5>
+                        <p class="small text-muted">Personal portfolio with admin panel</p>
+                        <div class="tech-stack">
+                            <span class="badge bg-primary me-1">Flask</span>
+                            <span class="badge bg-success me-1">Bootstrap</span>
+                            <span class="badge bg-warning">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="project-preview-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <i class="fas fa-shopping-cart fa-3x text-white"></i>
+                        </div>
+                    </div>
+                    <div class="project-info p-4">
+                        <h5>E-Commerce Platform</h5>
+                        <p class="small text-muted">Full-stack online shopping solution</p>
+                        <div class="tech-stack">
+                            <span class="badge bg-primary me-1">Python</span>
+                            <span class="badge bg-info me-1">SQLite</span>
+                            <span class="badge bg-dark">Payment Gateway</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="project-preview-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <i class="fas fa-tasks fa-3x text-white"></i>
+                        </div>
+                    </div>
+                    <div class="project-info p-4">
+                        <h5>Task Manager</h5>
+                        <p class="small text-muted">Collaborative task management app</p>
+                        <div class="tech-stack">
+                            <span class="badge bg-success me-1">React</span>
+                            <span class="badge bg-warning me-1">Node.js</span>
+                            <span class="badge bg-info">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-eye"></i> View All Projects
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <h2 class="display-5 fw-bold mb-4">Ready to Start Your Project?</h2>
+                <p class="lead mb-4">
+                    आपका कोई project idea है? चलिए मिलकर कुछ amazing बनाते हैं!
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-envelope"></i> Contact Me
+                    </a>
+                    <a href="https://wa.me/919876543210" class="btn btn-outline-light btn-lg" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize AOS
+AOS.init({
+    duration: 1000,
+    once: true
+});
+
+// Update visitor count
+fetch('/api/stats')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('homeVisitorCount').textContent = data.total_visitors;
+    })
+    .catch(error => console.log('Stats loading error:', error));
+</script>
+{% endblock %}

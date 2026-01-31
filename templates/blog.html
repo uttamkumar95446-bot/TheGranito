@@ -1,0 +1,569 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - My Portfolio{% endblock %}
+
+{% block content %}
+<!-- Blog Header -->
+<section class="blog-header py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <h1 class="display-4 fw-bold mb-3">My Blog</h1>
+                <p class="lead">
+                    Web development, tech insights, और मेरे experiences के बारे में articles
+                </p>
+                <div class="blog-stats mt-4">
+                    <span class="badge bg-light text-dark me-3">
+                        <i class="fas fa-newspaper"></i> {{ posts|length }} Posts
+                    </span>
+                    <span class="badge bg-light text-dark me-3">
+                        <i class="fas fa-eye"></i> 1.2K Views
+                    </span>
+                    <span class="badge bg-light text-dark">
+                        <i class="fas fa-heart"></i> 89 Likes
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Categories -->
+<section class="py-4 bg-light border-bottom">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <button class="btn btn-outline-primary active" data-category="all">
+                <i class="fas fa-globe"></i> All Posts
+            </button>
+            <button class="btn btn-outline-primary" data-category="web-dev">
+                <i class="fas fa-code"></i> Web Development
+            </button>
+            <button class="btn btn-outline-primary" data-category="tutorials">
+                <i class="fas fa-graduation-cap"></i> Tutorials
+            </button>
+            <button class="btn btn-outline-primary" data-category="tips">
+                <i class="fas fa-lightbulb"></i> Tips & Tricks
+            </button>
+            <button class="btn btn-outline-primary" data-category="personal">
+                <i class="fas fa-user"></i> Personal
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Post -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-5" data-aos="fade-up">
+                <div class="featured-post card border-0 shadow-lg overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="featured-image">
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                     class="img-fluid h-100 w-100" alt="Featured Post" style="object-fit: cover;">
+                                <div class="featured-badge">
+                                    <span class="badge bg-danger">Featured</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card-body h-100 d-flex flex-column justify-content-center p-5">
+                                <div class="post-meta mb-3">
+                                    <span class="badge bg-primary me-2">Web Development</span>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar"></i> January 15, 2024
+                                    </small>
+                                </div>
+                                <h2 class="card-title fw-bold mb-3">
+                                    Complete Guide to Flask Web Development in Hindi
+                                </h2>
+                                <p class="card-text text-muted mb-4">
+                                    Flask framework के साथ professional web applications कैसे बनाएं। 
+                                    इस comprehensive guide में आपको सब कुछ सिखाया जाएगा step-by-step...
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="#post-1" class="btn btn-primary">
+                                        <i class="fas fa-book-open"></i> Read More
+                                    </a>
+                                    <div class="post-stats text-muted small">
+                                        <i class="fas fa-eye me-1"></i> 245 views
+                                        <i class="fas fa-heart ms-3 me-1"></i> 12 likes
+                                        <i class="fas fa-comment ms-3 me-1"></i> 3 comments
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Posts Grid -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-4 mb-5">
+                <div class="blog-sidebar">
+                    <!-- Search -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="fas fa-search"></i> Search Posts</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search articles..." id="blogSearch">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Posts -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="fas fa-clock"></i> Recent Posts</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Python Flask Tutorial</h6>
+                                        <small>2 days ago</small>
+                                    </div>
+                                    <small class="text-muted">Complete beginner's guide...</small>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">JavaScript ES6 Features</h6>
+                                        <small>5 days ago</small>
+                                    </div>
+                                    <small class="text-muted">Modern JavaScript techniques...</small>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">CSS Grid Layout</h6>
+                                        <small>1 week ago</small>
+                                    </div>
+                                    <small class="text-muted">Advanced CSS layout system...</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Tags -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="fas fa-tags"></i> Popular Tags</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="tag-cloud">
+                                <span class="badge bg-primary me-2 mb-2">Python</span>
+                                <span class="badge bg-success me-2 mb-2">Flask</span>
+                                <span class="badge bg-warning me-2 mb-2">JavaScript</span>
+                                <span class="badge bg-info me-2 mb-2">HTML/CSS</span>
+                                <span class="badge bg-secondary me-2 mb-2">Bootstrap</span>
+                                <span class="badge bg-danger me-2 mb-2">Web Design</span>
+                                <span class="badge bg-dark me-2 mb-2">Tutorial</span>
+                                <span class="badge bg-primary me-2 mb-2">Tips</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="fas fa-envelope"></i> Newsletter</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="small text-muted">
+                                Latest posts और tech updates के लिए subscribe करें
+                            </p>
+                            <form id="newsletterForm">
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Your email address" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-paper-plane"></i> Subscribe
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts Content -->
+            <div class="col-lg-8">
+                <div class="row" id="blogPosts">
+                    {% for post in posts %}
+                    <div class="col-md-6 mb-4 blog-post-card" data-category="web-dev" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                        <article class="card h-100 shadow-sm border-0 blog-card">
+                            <div class="blog-image-container">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     class="card-img-top blog-image" alt="{{ post.title }}">
+                                <div class="blog-overlay">
+                                    <div class="blog-date">
+                                        <span class="day">{{ post.date.split('-')[2] }}</span>
+                                        <span class="month">Jan</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <div class="post-meta mb-2">
+                                    <span class="badge bg-primary me-2">Tutorial</span>
+                                    <small class="text-muted">
+                                        <i class="fas fa-user"></i> {{ post.author }}
+                                    </small>
+                                </div>
+                                
+                                <h5 class="card-title fw-bold">
+                                    <a href="#post-{{ post.id }}" class="text-decoration-none text-dark">
+                                        {{ post.title }}
+                                    </a>
+                                </h5>
+                                
+                                <p class="card-text text-muted flex-grow-1">
+                                    {{ post.content[:120] }}...
+                                </p>
+                                
+                                <div class="post-footer d-flex justify-content-between align-items-center mt-auto">
+                                    <a href="#post-{{ post.id }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book-open"></i> Read More
+                                    </a>
+                                    <div class="post-stats text-muted small">
+                                        <i class="fas fa-eye"></i> 124
+                                        <i class="fas fa-heart ms-2"></i> 8
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Additional Static Posts -->
+                    <div class="col-md-6 mb-4 blog-post-card" data-category="tutorials" data-aos="fade-up" data-aos-delay="300">
+                        <article class="card h-100 shadow-sm border-0 blog-card">
+                            <div class="blog-image-container">
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     class="card-img-top blog-image" alt="CSS Grid Tutorial">
+                                <div class="blog-overlay">
+                                    <div class="blog-date">
+                                        <span class="day">10</span>
+                                        <span class="month">Jan</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <div class="post-meta mb-2">
+                                    <span class="badge bg-success me-2">CSS</span>
+                                    <small class="text-muted">
+                                        <i class="fas fa-user"></i> Your Name
+                                    </small>
+                                </div>
+                                
+                                <h5 class="card-title fw-bold">
+                                    <a href="#" class="text-decoration-none text-dark">
+                                        CSS Grid Layout Complete Guide in Hindi
+                                    </a>
+                                </h5>
+                                
+                                <p class="card-text text-muted flex-grow-1">
+                                    CSS Grid layout system की complete guide। यहाँ आप सीखेंगे कि modern web layouts कैसे बनाएं...
+                                </p>
+                                
+                                <div class="post-footer d-flex justify-content-between align-items-center mt-auto">
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book-open"></i> Read More
+                                    </a>
+                                    <div class="post-stats text-muted small">
+                                        <i class="fas fa-eye"></i> 189
+                                        <i class="fas fa-heart ms-2"></i> 15
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="col-md-6 mb-4 blog-post-card" data-category="tips" data-aos="fade-up" data-aos-delay="400">
+                        <article class="card h-100 shadow-sm border-0 blog-card">
+                            <div class="blog-image-container">
+                                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     class="card-img-top blog-image" alt="Programming Tips">
+                                <div class="blog-overlay">
+                                    <div class="blog-date">
+                                        <span class="day">05</span>
+                                        <span class="month">Jan</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <div class="post-meta mb-2">
+                                    <span class="badge bg-warning me-2">Tips</span>
+                                    <small class="text-muted">
+                                        <i class="fas fa-user"></i> Your Name
+                                    </small>
+                                </div>
+                                
+                                <h5 class="card-title fw-bold">
+                                    <a href="#" class="text-decoration-none text-dark">
+                                        10 Programming Tips for Beginners
+                                    </a>
+                                </h5>
+                                
+                                <p class="card-text text-muted flex-grow-1">
+                                    Programming beginners के लिए essential tips जो आपको better developer बनने में help करेंगी...
+                                </p>
+                                
+                                <div class="post-footer d-flex justify-content-between align-items-center mt-auto">
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book-open"></i> Read More
+                                    </a>
+                                    <div class="post-stats text-muted small">
+                                        <i class="fas fa-eye"></i> 95
+                                        <i class="fas fa-heart ms-2"></i> 6
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="col-md-6 mb-4 blog-post-card" data-category="personal" data-aos="fade-up" data-aos-delay="500">
+                        <article class="card h-100 shadow-sm border-0 blog-card">
+                            <div class="blog-image-container">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     class="card-img-top blog-image" alt="Developer Journey">
+                                <div class="blog-overlay">
+                                    <div class="blog-date">
+                                        <span class="day">01</span>
+                                        <span class="month">Jan</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <div class="post-meta mb-2">
+                                    <span class="badge bg-info me-2">Personal</span>
+                                    <small class="text-muted">
+                                        <i class="fas fa-user"></i> Your Name
+                                    </small>
+                                </div>
+                                
+                                <h5 class="card-title fw-bold">
+                                    <a href="#" class="text-decoration-none text-dark">
+                                        My Coding Journey: From Zero to Web Developer
+                                    </a>
+                                </h5>
+                                
+                                <p class="card-text text-muted flex-grow-1">
+                                    मेरी coding journey की complete story। कैसे मैंने सीखा programming और कैसे बना एक web developer...
+                                </p>
+                                
+                                <div class="post-footer d-flex justify-content-between align-items-center mt-auto">
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book-open"></i> Read More
+                                    </a>
+                                    <div class="post-stats text-muted small">
+                                        <i class="fas fa-eye"></i> 156
+                                        <i class="fas fa-heart ms-2"></i> 21
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Blog pagination" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <h3 class="fw-bold mb-3">Stay Updated!</h3>
+                <p class="lead mb-4">
+                    Latest blog posts और tech updates के लिए subscribe करें
+                </p>
+                <form class="row g-3 justify-content-center" id="mainNewsletterForm">
+                    <div class="col-md-6">
+                        <input type="email" class="form-control form-control-lg" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-light btn-lg w-100">
+                            <i class="fas fa-paper-plane"></i> Subscribe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.blog-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+}
+
+.blog-image {
+    transition: transform 0.3s ease;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-card:hover .blog-image {
+    transform: scale(1.05);
+}
+
+.blog-overlay {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.blog-date {
+    background: rgba(0, 123, 255, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.blog-date .day {
+    display: block;
+    font-size: 1.2em;
+}
+
+.blog-date .month {
+    display: block;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.featured-post {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.featured-post .card-body {
+    background: white;
+}
+
+.featured-image {
+    position: relative;
+    height: 400px;
+}
+
+.featured-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.tag-cloud .badge {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tag-cloud .badge:hover {
+    transform: scale(1.1);
+}
+
+.blog-sidebar .card {
+    border: none;
+    border-radius: 15px;
+}
+
+.post-stats i {
+    color: #6c757d;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Blog category filtering
+document.querySelectorAll('[data-category]').forEach(button => {
+    button.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        
+        // Update active button
+        document.querySelectorAll('[data-category]').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Filter posts
+        document.querySelectorAll('.blog-post-card').forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Blog search functionality
+document.getElementById('blogSearch').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    document.querySelectorAll('.blog-post-card').forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const content = card.querySelector('.card-text').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
+
+// Newsletter forms
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Newsletter subscription successful! 🎉');
+    this.reset();
+});
+
+document.getElementById('mainNewsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Thank you for subscribing! 📧');
+    this.reset();
+});
+</script>
+{% endblock %}

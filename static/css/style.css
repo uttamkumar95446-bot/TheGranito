@@ -1,0 +1,40 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #121D3A;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.glass {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.btn-3d {
+  background-color: #FF715B;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 5px #999;
+  transition: all 0.2s;
+}
+.btn-3d:hover {
+  background-color: #FFD66B;
+  box-shadow: 0 8px 20px rgba(255, 113, 91, 0.4);
+  transform: translateY(-2px);
+}
+
+.hero-section {
+  padding: 2rem;
+  text-align: center;
+}
+.profile-pic {
+  width: 150px;
+  border-radius: 50%;
+  margin: 1rem auto;
+}

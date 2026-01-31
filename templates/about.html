@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}About - Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <section class="row align-items-center mb-5">
+        <div class="col-lg-4 text-center mb-4">
+            <img src="{{ url_for('static', filename='images/profile.jpg') }}" 
+                 alt="Profile" class="img-fluid rounded-circle shadow" 
+                 style="width: 250px; height: 250px; object-fit: cover;">
+        </div>
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold">About Me</h1>
+            <p class="lead text-muted">
+                नमस्ते! मैं एक passionate web developer हूँ जो modern technologies 
+                के साथ innovative solutions बनाना पसंद करता हूँ।
+            </p>
+            <div class="d-flex gap-3 mt-4">
+                <a href="{{ url_for('contact') }}" class="btn btn-primary">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+                <a href="{{ url_for('download_resume') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Technical Skills</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Programming Languages</h4>
+                <div class="skill-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Python</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>JavaScript</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>HTML/CSS</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Frameworks & Tools</h4>
+                <div class="skill-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Flask</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Git/GitHub</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="skill-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Bootstrap</span>
+                        <span>88%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-secondary" style="width: 88%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Web Developer</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Tech Solutions Pvt. Ltd.</h6>
+                        <p class="text-muted"><i class="fas fa-calendar"></i> Jan 2023 - Present</p>
+                        <p class="card-text">
+                            Developing responsive web applications using Flask, JavaScript, 
+                            and modern web technologies. Working on client projects and 
+                            maintaining existing systems.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Frontend Developer Intern</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">StartUp Inc.</h6>
+                        <p class="text-muted"><i class="fas fa-calendar"></i> Jun 2022 - Dec 2022</p>
+                        <p class="card-text">
+                            Worked on UI/UX improvements and built responsive websites 
+                            using HTML, CSS, and JavaScript. Collaborated with design 
+                            team to implement user interfaces.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Education</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Bachelor of Computer Science</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">XYZ University</h6>
+                        <p class="text-muted">2020 - 2024</p>
+                        <p class="card-text">
+                            Specialized in web development, data structures, and algorithms. 
+                            Participated in coding competitions and hackathons.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Web Development Certification</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Online Academy</h6>
+                        <p class="text-muted">2023</p>
+                        <p class="card-text">
+                            Completed comprehensive course covering modern web development 
+                            technologies including Python, Flask, and database management.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section>
+        <h2 class="text-center mb-4">Achievements</h2>
+        <div class="row text-center">
+            <div class="col-md-3 mb-3">
+                <div class="achievement-card">
+                    <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                    <h4>5+</h4>
+                    <p>Projects Completed</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="achievement-card">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h4>3+</h4>
+                    <p>Happy Clients</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="achievement-card">
+                    <i class="fas fa-code fa-3x text-success mb-3"></i>
+                    <h4>1000+</h4>
+                    <p>Lines of Code</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="achievement-card">
+                    <i class="fas fa-star fa-3x text-info mb-3"></i>
+                    <h4>4.8/5</h4>
+                    <p>Client Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

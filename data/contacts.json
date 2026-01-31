@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Rahul Sharma",
+    "email": "rahul.sharma@example.com",
+    "subject": "Website Development Project",
+    "message": "Hi! I need a professional website for my business. Can we discuss the requirements and pricing?",
+    "timestamp": "2024-01-15 14:30:25"
+  },
+  {
+    "name": "Priya Singh",
+    "email": "priya.singh@company.com",
+    "subject": "Job Opportunity",
+    "message": "We have a full-time web developer position. Your portfolio looks impressive. Are you interested?",
+    "timestamp": "2024-01-14 11:45:12"
+  },
+  {
+    "name": "Amit Kumar",
+    "email": "amit.kumar@startup.com",
+    "subject": "Mobile App Development",
+    "message": "Need help with Android app development. Can you handle both frontend and backend?",
+    "timestamp": "2024-01-13 16:20:08"
+  }
+]
