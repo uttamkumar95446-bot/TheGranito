@@ -55,7 +55,7 @@ def get_today_visitors():
     except:
         return 0
 
-def clean_old_data():
+"""def clean_old_data():
     """Clean old visitor data (older than 30 days)"""
     try:
         with open('data/visitors.json', 'r', encoding='utf-8') as f:
@@ -74,4 +74,4 @@ def clean_old_data():
         
         return len(visitors) - len(filtered_visitors)
     except:
-        return 0
+        return 0"""
