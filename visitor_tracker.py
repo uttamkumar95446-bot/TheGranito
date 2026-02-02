@@ -8,8 +8,8 @@ class VisitorTracker:
         self.data_dir = 'data'
         self.log_file = os.path.join(self.data_dir, 'visitors.json')
         os.makedirs(self.data_dir, exist_ok=True)
-        self.telegram_token = os.getenv(8184363319:AAHjMm5xKmv99n4L0ODmBjYmNTkcK4t98dE)
-        self.chat_id = os.getenv(5891930140)
+        self.telegram_token = os.getenv('TELEGRAM_TOKEN')
+        self.chat_id = os.getenv('CHAT_ID')
     
     def log_visitor(self):
         ua = request.headers.get('User-Agent', 'Unknown')
@@ -46,7 +46,7 @@ class VisitorTracker:
 
 👥 **Total:** {len(self._load())}"""
         
-        url = f"https://api.telegram.org/bot8184363319:AAHjMm5xKmv99n4L0ODmBjYmNTkcK4t98dE/sendMessage"
+        url = f"https://api.telegram.org/bot{self.telegram_token}/sendMessage"
         try:
             requests.post(url, data={'chat_id': self.chat_id, 'text': msg, 'parse_mode': 'Markdown'})
         except:
