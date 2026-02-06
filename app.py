@@ -1,3 +1,18 @@
+from utils import tracker  # Adjust import if filename different
+from flask import Flask, render_template, jsonify
+
+app = Flask(__name__)
+
+@app.before_request
+def track_visitors():
+    tracker.log_visitor()
+
+@app.route('/api/stats')
+def stats():
+    return jsonify(tracker.get_stats())
+
+# Your existing routes...
+
 from flask import Flask, render_template, request, jsonify
 from visitor_tracker import log_visitor, get_stats  # Changed from utils
 
