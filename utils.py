@@ -1,65 +1,64 @@
+# utils.py
 import json
 import os
-from datetime import datetime, date, timedelta
-from typing import Dict, Any
-from flask import request
+from datetime import datetime, timedelta
+from typing import List, Dict
 
-# Global tracker instance
-tracker = None
+DATA_DIR = "data"
+VISITOR_FILE = os.path.join(DATA_DIR, "visitors.json")
 
-class VisitorTracker:
-    def __init__(self, data_dir: str = 'data'):
-        self.data_dir = data_dir
-        self.log_file = os.path.join(data_dir, 'visitors.json')
-        os.makedirs(data_dir, exist_ok=True)
 
-    def log_visitor(self):
-        """Log current visitor."""
-        visitor_data = {
-            'timestamp': datetime.now().isoformat(),
-            'ip': request.remote_addr if request else 'unknown',
-            'path': request.path if request else '/'
-        }
-        
-        try:
-            with open(self.log_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-        except:
-            data = {'visits': [], 'total': 0}
-        
-        data['visits'].append(visitor_data)
-        data['total'] += 1
-        
-        # Cleanup old data (30 days)
-        cutoff = datetime.now() - timedelta(days=30)
-        data['visits'] = [v for v in data['visits'] 
-                         if datetime.fromisoformat(v['timestamp']) > cutoff]
-        
-        with open(self.log_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2)
-        
-        return data['total']
+def _load_json(path: str) -> List[Dict]:
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
 
-    def get_visitor_count(self) -> int:
-        """Get total visitor count."""
-        try:
-            with open(self.log_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            return data['total']
-        except:
-            return 0
 
-# Initialize global tracker
-tracker = VisitorTracker()
+def _save_json(path: str, data: List[Dict]) -> None:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-# BACKWARD COMPATIBLE FUNCTIONS (what your app expects)
-def log_visitor():
-    """Direct function call - works with your existing app.py"""
-    return tracker.log_visitor()
 
-def get_visitor_count():
-    """Direct function call - works with your existing templates"""
-    return tracker.get_visitor_count()
+def log_visitor(ip: str = "127.0.0.1", user_agent: str = "Unknown") -> None:
+    visitors = _load_json(VISITOR_FILE)
 
-# Export everything
-__all__ = ['log_visitor', 'get_visitor_count', 'tracker']
+    visitors.append({
+        "timestamp": datetime.utcnow().isoformat(),
+        "ip": ip,
+        "user_agent": user_agent
+    })
+
+    visitors = visitors[-1000:]  # keep last 1000
+    _save_json(VISITOR_FILE, visitors)
+
+
+def get_visitor_count() -> int:
+    return len(_load_json(VISITOR_FILE))
+
+
+def get_today_visitors() -> int:
+    visitors = _load_json(VISITOR_FILE)
+    today = datetime.utcnow().date()
+
+    return sum(
+        1 for v in visitors
+        if datetime.fromisoformat(v["timestamp"]).date() == today
+    )
+
+
+def clean_old_data(days: int = 30) -> int:
+    visitors = _load_json(VISITOR_FILE)
+    cutoff = datetime.utcnow() - timedelta(days=days)
+
+    filtered = [
+        v for v in visitors
+        if datetime.fromisoformat(v["timestamp"]) > cutoff
+    ]
+
+    _save_json(VISITOR_FILE, filtered)
+    return len(visitors) - len(filtered)
