@@ -1,20 +1,31 @@
-from utils import log_visitor, get_visitor_count  # This now works!
+from flask import Flask, request, render_template, jsonify  # Add jsonify if needed
+from utils import log_visitor  # Your visitor functions
+
+# 1. CREATE APP FIRST
+app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'  # Add if missing
+
+# 2. THEN ADD DECORATORS (app must exist)
 @app.before_request
 def track_visitors():
-    log_visitor()  # Calls the function above
-
-from flask import Flask, render_template, request, jsonify
-from visitor_tracker import log_visitor, get_stats  # Changed from utils
-
-app = Flask(__name__)
-
-@app.before_request
-def track_all_pages():
     log_visitor()
 
+# 3. API endpoint for frontend display
 @app.route('/api/stats')
-def api_stats():
-    return jsonify(get_stats())
+def stats():
+    from utils import get_visitor_count
+    return jsonify({'total': get_visitor_count()})
+
+# 4. Your existing routes (home, about, etc.)
+@app.route('/')
+def home():
+    return render_template('index.html')  # Or your main template
+
+# ... rest of your routes
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 import os
