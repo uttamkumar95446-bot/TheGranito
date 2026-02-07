@@ -1,11 +1,16 @@
+# config.py
 import os
 
-class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-super-secret-key-here'
+
+class BaseConfig:
+    SECRET_KEY = os.environ.get("SECRET_KEY", "change-this-secret-key")
+    JSON_SORT_KEYS = False
+
+
+class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    
-class ProductionConfig(Config):
+
+
+class ProductionConfig(BaseConfig):
     DEBUG = False
-    
-class DevelopmentConfig(Config):
-    DEBUG = True
+
