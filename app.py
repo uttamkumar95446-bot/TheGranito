@@ -3,6 +3,7 @@ from flask import (
     Flask, render_template, request,
     jsonify, send_file, send_from_directory
 )
+
 import os
 import json
 from datetime import datetime
@@ -15,6 +16,18 @@ app.config.from_object(DevelopmentConfig)
 
 DATA_DIR = "data"
 CONTACTS_FILE = os.path.join(DATA_DIR, "contacts.json")
+
+
+def log_visitor(ip, user_agent):
+    # Your logging code here, e.g., save to DB or file
+    print(f"Visitor IP: {ip}, UA: {user_agent}")  # Replace with actual logic
+    
+@app.before_request
+def track_visitors():
+    ip = request.remote_addr or "127.0.0.1"
+    user_agent = request.headers.get("User-Agent", "Unknown")
+    log_visitor(ip, user_agent)  # Positional args
+
 
 
 # -------------------- Helpers --------------------
