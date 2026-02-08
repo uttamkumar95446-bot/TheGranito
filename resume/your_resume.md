@@ -1,7 +1,7 @@
 # **Uttam Kumar**
-**AI Engineer & Full Stack Developer**  
-📍 Mumbai, India | 📧 uttam@example.com | 📞 +91 98765 43210  
-[GitHub](https://github.com/uttamkumartech) • [LinkedIn](https://linkedin.com/in/uttamkumartech) • [Portfolio](https://uttamportfolio.netlify.app)
+**CS student & Full Stack Developing and programming**  
+📍 CG, India | 📧 uttamkumar95446@gmail.com | 📞 +91 9109660705  
+[GitHub]([https://github.com/uttamkumar95446-bot]) • [LinkedIn](https://www.linkedin.com/in/uttam-kumar12/) • [Portfolio](https://thegranito.onrender.com/)
 
 ---
 
@@ -12,32 +12,24 @@ Innovative and detail-oriented AI Engineer with 3+ years of experience in machin
 
 ## 🎓 Education
 **B.Tech in Computer Science**  
-*Krishna Engineering College*, Ghaziabad, UP  
-_2018 – 2022 | CGPA: 8.7_
+*Chhatisgarh Swami Vivekanand Technical University*, Bhilai, CG  
+_2025 | Contineu...
 
 ---
 
 ## 💼 Experience
+  Self researches
 
-**AI Engineer** – TechNova Solutions  
-*Jan 2023 – Present*  
-- Developed real-time AI-driven automation for medical diagnostics.
-- Reduced processing time by 40% using optimized ML pipelines (scikit-learn, TensorFlow).
-- Deployed models using Docker, Flask, and AWS Lambda.
-
-**Full Stack Intern** – CodeBrew Labs  
-*Jul 2021 – Dec 2022*  
-- Created dynamic web apps using React, Flask & PostgreSQL.
-- Implemented authentication & role-based dashboards.
-
+**Full Stack Intern** –
+  Not yet
 ---
 
 ## 🛠 Skills
 
-**Programming:** Python, JavaScript, C++, SQL  
-**AI/ML:** TensorFlow, PyTorch, scikit-learn, OpenCV  
-**Web Dev:** HTML, CSS, React, Flask, Django  
-**DevOps:** Git, Docker, Heroku, Netlify  
+**Programming:** Python 
+**AI/ML:** Basic
+**Web Dev:** HTML, CSS, React, Flask 
+**DevOps:** Git, Netlify  
 **Tools:** VS Code, Postman, Figma, Canva
 
 ---
@@ -45,10 +37,10 @@ _2018 – 2022 | CGPA: 8.7_
 ## 📁 Projects
 
 **AI Resume Ranker** – Uses NLP to rank resumes for HR  
-[GitHub](https://github.com/uttamkumartech/resume-ranker) • [Demo](https://resume-ranker.netlify.app)
+[GitHub](https://github.com/uttamkumar95446-bot) • [Demo](https://thegranito.onrender.com/)
 
 **Portfolio Website** – 3D, animated, mobile-first personal site  
-[View](https://uttamportfolio.netlify.app)
+[View](https://thegranito.onrender.com/)
 
 **Car Racing Game (Pygame)** – Mobile-optimized with virtual buttons  
 [GitHub](https://github.com/uttamkumartech/car-racing-game)
@@ -57,22 +49,18 @@ _2018 – 2022 | CGPA: 8.7_
 
 ## 🏆 Achievements
 
-- 🥇 Winner, AI Hackathon 2024 (IIT Delhi)  
-- 🎖 Google ML Study Jam Top Performer  
-- 🏅 Microsoft Certified: Azure AI Fundamentals
+
 
 ---
 
 ## 📜 Certifications
 
-- TensorFlow Developer Certificate – Google
-- Deep Learning Specialization – Coursera (Andrew Ng)
-- Web Development Bootcamp – Udemy
+i- hub IIT Patna Al And Machine learning certificattion
 
 ---
 
 ## 📞 Contact
 
-**Email:** uttam@example.com  
-**Phone:** +91 98765 43210  
-**Website:** [uttamportfolio.netlify.app](https://uttamportfolio.netlify.app)
+**Email:** uttamkumar95446@gmail.com  
+**Phone:** +91 9109660705  
+**Website:** [https://thegranito.onrender.com/]([https://thegranito.onrender.com/]
