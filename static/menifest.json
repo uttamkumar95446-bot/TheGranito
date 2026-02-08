@@ -1,7 +1,7 @@
 {
   "name": "My Portfolio - Web Developer",
-  "short_name": "Portfolio",
-  "description": "Professional portfolio website showcasing web development skills and projects",
+  "short_name": "The Granito",
+  "description": "Professional website showcasing web development skills and projects",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
