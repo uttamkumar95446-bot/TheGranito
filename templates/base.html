@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+       <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TheGranito">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Portfolio - Web Developer{% endblock %}</title>
@@ -31,6 +45,423 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- 
+    PWA REGISTRATION SCRIPT
+    Add this before closing </body> tag in base.html
+-->
+
+<script>
+/**
+ * Progressive Web App (PWA) Registration
+ * TheGranito Portfolio
+ */
+
+// Check if service workers are supported
+if ('serviceWorker' in navigator) {
+    // Register service worker
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/js/sw.js', {
+            scope: '/'
+        })
+        .then((registration) => {
+            console.log('✅ Service Worker registered successfully:', registration.scope);
+            
+            // Check for updates periodically
+            setInterval(() => {
+                registration.update();
+            }, 60000); // Check every minute
+            
+            // Handle service worker updates
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        // New service worker available
+                        showUpdateNotification();
+                    }
+                });
+            });
+        })
+        .catch((error) => {
+            console.error('❌ Service Worker registration failed:', error);
+        });
+    });
+    
+    // Handle service worker messages
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        console.log('📩 Message from Service Worker:', event.data);
+    });
+}
+
+/**
+ * Show update notification when new version is available
+ */
+function showUpdateNotification() {
+    // Create update notification
+    const notification = document.createElement('div');
+    notification.className = 'update-notification';
+    notification.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>New version available!</span>
+            <button onclick="updateServiceWorker()" class="btn-update">Update</button>
+            <button onclick="dismissUpdate()" class="btn-dismiss">×</button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+}
+
+/**
+ * Update service worker
+ */
+function updateServiceWorker() {
+    navigator.serviceWorker.getRegistration().then((registration) => {
+        if (registration && registration.waiting) {
+            // Tell service worker to skip waiting
+            registration.waiting.postMessage({ action: 'skipWaiting' });
+            
+            // Reload page when service worker takes control
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
+        }
+    });
+}
+
+/**
+ * Dismiss update notification
+ */
+function dismissUpdate() {
+    const notification = document.querySelector('.update-notification');
+    if (notification) {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }
+}
+
+/**
+ * Install PWA prompt
+ */
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent default browser install prompt
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show custom install button
+    showInstallPromotion();
+});
+
+/**
+ * Show install promotion
+ */
+function showInstallPromotion() {
+    // Create install button
+    const installBtn = document.createElement('button');
+    installBtn.className = 'install-pwa-btn';
+    installBtn.innerHTML = `
+        <i class="fas fa-download"></i>
+        <span>Install App</span>
+    `;
+    
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            // Show install prompt
+            deferredPrompt.prompt();
+            
+            // Wait for user response
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response: ${outcome}`);
+            
+            // Reset deferred prompt
+            deferredPrompt = null;
+            
+            // Remove install button
+            installBtn.remove();
+        }
+    });
+    
+    document.body.appendChild(installBtn);
+}
+
+/**
+ * Track PWA install
+ */
+window.addEventListener('appinstalled', () => {
+    console.log('✅ PWA installed successfully!');
+    
+    // Hide install button if exists
+    const installBtn = document.querySelector('.install-pwa-btn');
+    if (installBtn) {
+        installBtn.remove();
+    }
+    
+    // Track installation (optional - send to analytics)
+    // gtag('event', 'pwa_install');
+});
+
+/**
+ * Detect if running as PWA
+ */
+function isPWA() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true;
+}
+
+// Log PWA status
+if (isPWA()) {
+    console.log('🚀 Running as PWA (Standalone mode)');
+    document.body.classList.add('pwa-mode');
+} else {
+    console.log('🌐 Running in browser');
+}
+
+/**
+ * Request notification permission
+ */
+function requestNotificationPermission() {
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                console.log('✅ Notification permission granted');
+            } else {
+                console.log('❌ Notification permission denied');
+            }
+        });
+    }
+}
+
+// Request notification permission after 30 seconds
+setTimeout(requestNotificationPermission, 30000);
+
+/**
+ * Share API support
+ */
+async function shareContent(title, text, url) {
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: title,
+                text: text,
+                url: url
+            });
+            console.log('✅ Content shared successfully');
+        } catch (error) {
+            console.log('❌ Share cancelled or failed:', error);
+        }
+    } else {
+        console.log('❌ Web Share API not supported');
+        // Fallback to copy link
+        navigator.clipboard.writeText(url);
+        alert('Link copied to clipboard!');
+    }
+}
+
+// Make shareContent globally available
+window.shareContent = shareContent;
+
+/**
+ * Network status detection
+ */
+window.addEventListener('online', () => {
+    console.log('🌐 Connection restored');
+    showToast('Connection restored', 'success');
+});
+
+window.addEventListener('offline', () => {
+    console.log('📡 Connection lost');
+    showToast('You are offline', 'warning');
+});
+
+/**
+ * Show toast notification
+ */
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Make showToast globally available
+window.showToast = showToast;
+</script>
+
+<!-- 
+    PWA STYLES
+    Add this in <head> section or in your CSS file
+-->
+<style>
+/* Update Notification */
+.update-notification {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    transition: bottom 0.3s ease;
+}
+
+.update-notification.show {
+    bottom: 30px;
+}
+
+.update-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-update {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-update:hover {
+    transform: scale(1.05);
+}
+
+.btn-dismiss {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+}
+
+/* Install PWA Button */
+.install-pwa-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    transition: all 0.3s ease;
+    animation: bounceIn 0.6s ease;
+}
+
+.install-pwa-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes bounceIn {
+    from {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.3s ease;
+    min-width: 250px;
+    text-align: center;
+}
+
+.toast.show {
+    top: 30px;
+}
+
+.toast-success {
+    background: linear-gradient(135deg, #06D6A0, #118AB2);
+}
+
+.toast-warning {
+    background: linear-gradient(135deg, #FFD66B, #FF715B);
+}
+
+.toast-error {
+    background: linear-gradient(135deg, #FF715B, #FF4444);
+}
+
+.toast-info {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* PWA Mode Adjustments */
+.pwa-mode .navbar {
+    padding-top: env(safe-area-inset-top);
+}
+
+.pwa-mode body {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .install-pwa-btn {
+        bottom: 80px;
+        right: 20px;
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .update-notification {
+        bottom: -100px;
+        left: 20px;
+        right: 20px;
+        transform: none;
+        border-radius: 15px;
+    }
+    
+    .update-notification.show {
+        bottom: 20px;
+    }
+}
+</style>
     <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-content">
