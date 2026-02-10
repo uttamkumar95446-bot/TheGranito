@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - TheGranito Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .offline-container {
+            text-align: center;
+            max-width: 600px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .offline-icon {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .status-dot.online {
+            background: #44ff44;
+            animation: none;
+        }
+
+        .retry-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .retry-btn:active {
+            transform: translateY(0);
+        }
+
+        .cached-pages {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cached-pages h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .page-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .page-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .page-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .wifi-icon {
+            font-size: 5rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .offline-icon {
+                width: 150px;
+                height: 150px;
+                font-size: 3.5rem;
+            }
+
+            .cached-pages {
+                padding: 1.5rem;
+            }
+
+            .page-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <span class="wifi-icon">📡</span>
+        </div>
+
+        <h1>You're Offline</h1>
+        
+        <p>
+            आप अभी offline हैं। कृपया अपना internet connection check करें और दोबारा try करें।
+        </p>
+
+        <div class="status-indicator">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Checking connection...</span>
+        </div>
+
+        <button class="retry-btn" onclick="retryConnection()">
+            <span id="retryText">🔄 Retry Connection</span>
+        </button>
+
+        <div class="cached-pages">
+            <h3>📂 Available Offline Pages</h3>
+            <div class="page-links">
+                <a href="/" class="page-link">🏠 Home</a>
+                <a href="/about" class="page-link">👤 About</a>
+                <a href="/projects" class="page-link">💼 Projects</a>
+                <a href="/contact" class="page-link">📧 Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check connection status
+        function checkConnection() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+
+            if (navigator.onLine) {
+                statusDot.classList.add('online');
+                statusText.textContent = 'Connection restored!';
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                statusDot.classList.remove('online');
+                statusText.textContent = 'No internet connection';
+            }
+        }
+
+        // Retry connection
+        function retryConnection() {
+            const retryBtn = document.querySelector('.retry-btn');
+            const retryText = document.getElementById('retryText');
+            
+            retryText.textContent = '⏳ Checking...';
+            retryBtn.disabled = true;
+
+            setTimeout(() => {
+                checkConnection();
+                retryText.textContent = '🔄 Retry Connection';
+                retryBtn.disabled = false;
+            }, 1000);
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            console.log('Connection restored');
+            checkConnection();
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('Connection lost');
+            checkConnection();
+        });
+
+        // Initial check
+        checkConnection();
+
+        // Periodic check
+        setInterval(checkConnection, 5000);
+    </script>
+</body>
+</html>
