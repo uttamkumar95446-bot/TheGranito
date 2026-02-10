@@ -58,7 +58,8 @@
                 <div class="profile-image-container float-animation">
                     <img src="{{ url_for('static', filename='images/profile.jpg') }}" 
                          alt="Profile" class="img-fluid rounded-circle shadow-lg profile-image">
-                    <div class="profile-ring"></div>
+                         style="width: 100px; height: 100px; object-fit: cover;">
+
                 </div>
             </div>
         </div>
@@ -311,10 +312,6 @@
     </div>
 </section>
 
-<img src="{{ url_for('static', filename='images/profile.jpg') }}" 
-     alt="Profile" 
-     class="img-fluid rounded-circle shadow-lg profile-image"
-     style="width: 100px; height: 100px; object-fit: cover;">
 
 {% endblock %}
 
