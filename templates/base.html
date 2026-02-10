@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+    <script>
+     // Force scroll to top immediately
+     if (history.scrollRestoration) {
+      history.scrollRestoration = 'manual';
+     }
+     window.scrollTo(0, 0);
+    </script>
        <!-- PWA Manifest -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 
@@ -45,6 +52,14 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+<script>
+    // Ensure page loads from top
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            window.scrollTo(0, 0);
+        }, 0);
+    });
+</script>
     <!-- 
     PWA REGISTRATION SCRIPT
     Add this before closing </body> tag in base.html
