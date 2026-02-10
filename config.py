@@ -1,28 +1,28 @@
 const CONFIG = {
     typewriter: {
         texts: [
-            "Full Stack Web Developer",  // ← Edit these
+            "Full Stack Web Developer",  // 
             "Python & Flask Expert",
             "UI/UX Designer",
             "Problem Solver"
         ],
-        typingSpeed: 80,      // ← Typing speed (ms)
-        deletingSpeed: 50,    // ← Deleting speed (ms)
-        pauseTime: 2000       // ← Pause between texts (ms)
+        typingSpeed: 80,      // 
+        deletingSpeed: 50,    //  
+        pauseTime: 2000       // 
     },
     preloader: {
-        minDisplayTime: 1000, // ← Minimum preloader time (ms)
-        fadeOutDuration: 500  // ← Fade out duration (ms)
+        minDisplayTime: 1000, // 
+        fadeOutDuration: 500  //
     },
     navbar: {
-        scrollThreshold: 50   // ← Scroll distance for sticky navbar
+        scrollThreshold: 50   //
     },
     backToTop: {
-        showThreshold: 300,   // ← Scroll distance to show button
-        scrollDuration: 800   // ← Scroll animation duration (ms)
+        showThreshold: 300,   // 
+        scrollDuration: 800   // 
     },
     cursor: {
-        enabled: true         // ← Enable/disable custom cursor
+        enabled: true         // 
     }
 };
 
