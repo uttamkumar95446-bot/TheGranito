@@ -1,3 +1,22 @@
+// SCROLL FIX - Add at top
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+window.addEventListener('load', () => {
+    if (window.location.hash) {
+        history.pushState("", document.title, window.location.pathname);
+    }
+    setTimeout(() => window.scrollTo(0, 0), 0);
+});
+
+// YOUR EXISTING CODE BELOW...
+document.addEventListener("DOMContentLoaded", () => {
+    window.scrollTo(0, 0);  // Add this line
+    
+    // ... rest of your code
+});
 /**
  * ==========================================
  * THEGRANITO PORTFOLIO - PROFESSIONAL JS
