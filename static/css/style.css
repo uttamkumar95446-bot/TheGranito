@@ -1,3 +1,17 @@
+// script.js के top पर
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+
+window.addEventListener('load', () => {
+    if (window.location.hash) {
+        // URL से # हटा दें (scroll को reset करते हुए)
+        history.pushState("", document.title, window.location.pathname);
+    }
+
+    // browser को अपना native smooth scroll देने दो
+    // scroll top की need न हो तो setTimeout(scrollTo) हटा दो
+});
 
 /* ========================================
    THEGRANITO PORTFOLIO - PROFESSIONAL CSS
