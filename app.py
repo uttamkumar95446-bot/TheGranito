@@ -22,11 +22,6 @@ def log_visitor(ip, user_agent):
     # Your logging code here, e.g., save to DB or file
     print(f"Visitor IP: {ip}, UA: {user_agent}")  # Replace with actual logic
 
-# In app.py
-@app.route('/')
-def home():
-    # Force clean URL
-    return redirect(url_for('home', _external=True, _scheme='https'), code=302)
 
 @app.route('/offline')
 def offline():
