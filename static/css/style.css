@@ -35,7 +35,7 @@ body {
   text-align: center;
 }
 .profile-pic {
-  width: 150px;
-  border-radius: 50%;
+  width: 120px;
+  border-radius: 30%;
   margin: 1rem auto;
 }
