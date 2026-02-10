@@ -1,3 +1,9 @@
+// Add at VERY top of script.js
+(function() {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+})();
 // SCROLL FIX - Add at top
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
