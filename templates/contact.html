@@ -1,7 +1,582 @@
-<h2>Contact Us</h2>
-<form>
-    <input type="text" placeholder="UTTAM KUMAR">
-    <input type="email" placeholder="Email">
-    <textarea rows="4" placeholder="Hellow 👋"></textarea>
-    <button type="submit">Send</button>
-</form>
+{% extends "base.html" %}
+
+{% block title %}Contact Me - Get In Touch{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-section {
+        min-height: 80vh;
+        padding: 60px 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .contact-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+    
+    .contact-container {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .contact-header {
+        text-align: center;
+        margin-bottom: 50px;
+        color: white;
+    }
+    
+    .contact-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        animation: fadeInDown 0.8s ease;
+    }
+    
+    .contact-header p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        animation: fadeInUp 0.8s ease;
+    }
+    
+    .contact-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: zoomIn 0.6s ease;
+    }
+    
+    .info-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        color: white;
+        height: 100%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .info-item {
+        display: flex;
+        align-items: start;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease;
+    }
+    
+    .info-item:hover {
+        transform: translateX(10px);
+    }
+    
+    .info-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+    
+    .info-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        background: white;
+    }
+    
+    .form-control::placeholder {
+        color: #adb5bd;
+    }
+    
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 14px 40px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+    
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .submit-btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .submit-btn span {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .social-link {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-5px);
+        color: white;
+    }
+    
+    .alert {
+        border-radius: 12px;
+        border: none;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        animation: slideDown 0.4s ease;
+    }
+    
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+        border-width: 0.15em;
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes zoomIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .contact-header h1 {
+            font-size: 2rem;
+        }
+        
+        .contact-card, .info-card {
+            padding: 25px;
+        }
+        
+        .info-card {
+            margin-top: 30px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+    <div class="container contact-container">
+        <!-- Header -->
+        <div class="contact-header">
+            <h1><i class="fas fa-envelope-open-text"></i> Get In Touch</h1>
+            <p>Contact Me - I'm Always with you for new projects !</p>
+        </div>
+        
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-7 mb-4">
+                <div class="contact-card">
+                    <h3 class="mb-4 fw-bold text-dark">
+                        <i class="fas fa-paper-plane text-primary"></i> Send Me a Message
+                    </h3>
+                    
+                    <!-- Success/Error Messages -->
+                    <div id="formMessage" style="display: none;"></div>
+                    
+                    <form id="contactForm" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user text-primary"></i> Your Name *
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="name" 
+                                    name="name" 
+                                    placeholder="Enter your full name" 
+                                    required
+                                    pattern="[A-Za-z\s]{2,50}"
+                                    title="Please enter a valid name (letters only, 2-50 characters)">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope text-primary"></i> Email Address *
+                                </label>
+                                <input 
+                                    type="email" 
+                                    class="form-control" 
+                                    id="email" 
+                                    name="email" 
+                                    placeholder="your.email@example.com" 
+                                    required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-tag text-primary"></i> Subject *
+                            </label>
+                            <select class="form-select" id="subject" name="subject" required>
+                                <option value="" selected disabled>Choose a subject...</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Project Collaboration">Project Collaboration</option>
+                                <option value="Job Opportunity">Job Opportunity</option>
+                                <option value="Freelance Work">Freelance Work</option>
+                                <option value="Technical Support">Technical Support</option>
+                                <option value="Feedback">Feedback</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="message" class="form-label">
+                                <i class="fas fa-comment-dots text-primary"></i> Your Message *
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="message" 
+                                name="message" 
+                                rows="5" 
+                                placeholder="Write your message here... Tell me How can I help you!" 
+                                required
+                                minlength="10"
+                                maxlength="1000"></textarea>
+                            <small class="text-muted">
+                                <span id="charCount">0</span>/1000 characters
+                            </small>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="privacy" required>
+                            <label class="form-check-label" for="privacy">
+                                I agree to the <a href="#" class="text-primary">Privacy Policy</a> and <a href="#" class="text-primary">Terms of Service</a> *
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span>
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="col-lg-5">
+                <div class="info-card">
+                    <h3 class="mb-4 fw-bold">
+                        <i class="fas fa-info-circle"></i> Contact Information
+                    </h3>
+                    
+                    <p class="mb-4">
+                        Contact me anytime without hesitation। I will try to respond to your messages as soon as possible!
+                    </p>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 fw-bold">Location</h6>
+                            <p class="mb-0 opacity-75">Rajnandgaon, Chhatisgarh, India</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 fw-bold">Phone</h6>
+                            <p class="mb-0 opacity-75">+91 9109660705</p>
+                            <small class="opacity-75">Mon-Sat 9:00 AM - 6:00 PM</small>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 fw-bold">Email</h6>
+                            <p class="mb-0 opacity-75">uttamkumar95446@gmail.com</p>
+                            <small class="opacity-75">24/7 Available</small>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item mb-0">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 fw-bold">Response Time</h6>
+                            <p class="mb-0 opacity-75">Usually within 24 hours</p>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4 opacity-25">
+                    
+                    <h6 class="mb-3 fw-bold">
+                        <i class="fas fa-share-alt"></i> Follow Me
+                    </h6>
+                    <div class="social-links">
+                        <a href="https://github.com/uttamkumar95446-bot" class="social-link" target="_blank" title="GitHub">
+                            <i class="fab fa-github fa-lg"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/uttam-kumar12/" class="social-link" target="_blank" title="LinkedIn">
+                            <i class="fab fa-linkedin-in fa-lg"></i>
+                        </a>
+                        <a href="https://www.instagram.com/uttam_kumar_sahu_12" class="social-link" target="_blank" title="Instagram">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                        <a href="https://wa.me/919109660705" class="social-link" target="_blank" title="WhatsApp">
+                            <i class="fab fa-whatsapp fa-lg"></i>
+                        </a>
+                        <a href="https://www.facebook.com/uttam.sahu.391220" class="social-link" target="_blank" title="Facebook">
+                            <i class="fab fa-facebok fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section (Optional) -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">
+                <i class="fas fa-map-marked-alt text-primary"></i> Find Me Here
+            </h2>
+            <p class="text-muted">Indore, Madhya Pradesh, India</p>
+        </div>
+        
+        <div class="ratio ratio-21x9 rounded-3 shadow-sm overflow-hidden">
+            <iframe 
+                src="https://www.google.com/maps/place/Rajnandgaon,+Chhattisgarh+491441/@21.0976208,80.990289,13z/data=!3m1!4b1!4m6!3m5!1s0x3a294452f4f47145:0xe6b0ebabb2989a0b!8m2!3d21.0976046!4d81.0337066!16zL20vMDR5ZmI5?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Character Counter
+const messageField = document.getElementById('message');
+const charCount = document.getElementById('charCount');
+
+messageField.addEventListener('input', function() {
+    charCount.textContent = this.value.length;
+    
+    if (this.value.length > 900) {
+        charCount.style.color = '#dc3545';
+    } else {
+        charCount.style.color = '#6c757d';
+    }
+});
+
+// Form Submission
+const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMessage = document.getElementById('formMessage');
+
+contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Disable submit button
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span><span class="spinner-border spinner-border-sm me-2"></span>Sending...</span>';
+    
+    // Get form data
+    const formData = new FormData(contactForm);
+    
+    try {
+        const response = await fetch('{{ url_for("contact") }}', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Success message
+            formMessage.innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i> 
+                    <strong>Success!</strong> आपका message successfully भेज दिया गया है। मैं जल्द ही आपसे संपर्क करूंगा!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            // Reset form
+            contactForm.reset();
+            charCount.textContent = '0';
+            
+            // Scroll to message
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+        } else {
+            throw new Error('Submission failed');
+        }
+        
+    } catch (error) {
+        // Error message
+        formMessage.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> 
+                <strong>Error!</strong> कुछ गलत हो गया। कृपया दोबारा कोशिश करें या direct email करें।
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+    } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span><i class="fas fa-paper-plane"></i> Send Message</span>';
+        
+        // Show message
+        formMessage.style.display = 'block';
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            formMessage.style.display = 'none';
+        }, 5000);
+    }
+});
+
+// Form Validation Enhancements
+const inputs = contactForm.querySelectorAll('input, select, textarea');
+
+inputs.forEach(input => {
+    input.addEventListener('blur', function() {
+        if (this.checkValidity()) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
+        }
+    });
+});
+
+// AOS Animation
+AOS.init({
+    duration: 800,
+    once: true
+});
+</script>
+{% endblock %}
