@@ -1,20 +1,10 @@
-// Add at VERY top of script.js
-(function() {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-})();
-// SCROLL FIX - Add at top
+// script.js के शुरू में रखो
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }
-window.scrollTo(0, 0);
 
 window.addEventListener('load', () => {
-    if (window.location.hash) {
-        history.pushState("", document.title, window.location.pathname);
-    }
-    setTimeout(() => window.scrollTo(0, 0), 0);
+    window.scrollTo(0, 0);
 });
 
 // YOUR EXISTING CODE BELOW...
