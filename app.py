@@ -62,7 +62,11 @@ def favicon():
         "favicon.ico",
         mimetype="image/vnd.microsoft.icon"
     )
-
+@app.before_request
+def track_visitors():
+    ip = request.remote_addr or "127.0.0.1"
+    user_agent = request.headers.get("User-Agent", "Unknown")
+    log_visitor(ip, user_agent)  # Positional args
 
 @app.route("/manifest.json")
 def manifest():
