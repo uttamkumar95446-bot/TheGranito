@@ -89,7 +89,9 @@ def track_visitors():
 # -------------------- Pages --------------------
 
 
-
+@app.route("/") 
+def home(): 
+    return render_template( "index.html", visitor_count=get_visitor_count() )
 
 @app.route("/about")
 def about():
