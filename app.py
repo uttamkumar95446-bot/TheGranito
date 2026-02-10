@@ -32,15 +32,6 @@ def home():
 def offline():
     return render_template('offline.html')
     
-@app.before_request
-def track_visitors():
-    ip = request.remote_addr or "127.0.0.1"
-    user_agent = request.headers.get("User-Agent", "Unknown")
-    log_visitor(ip, user_agent)  # Positional args
-
-
-
-
 
 # -------------------- Helpers --------------------
 
