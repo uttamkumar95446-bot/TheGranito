@@ -1,19 +1,18 @@
-// script.js के शुरू में रखो
+// script.js के top पर
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }
 
 window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
+    if (window.location.hash) {
+        // URL से # हटा दें (scroll को reset करते हुए)
+        history.pushState("", document.title, window.location.pathname);
+    }
+
+    // browser को अपना native smooth scroll देने दो
+    // scroll top की need न हो तो setTimeout(scrollTo) हटा दो
 });
 
-// YOUR EXISTING CODE BELOW...
-document.addEventListener("DOMContentLoaded", () => {
-    window.scrollTo(0, 0);  // Add this line
-    
-    // ... rest of your code
-});
-/**
  * ==========================================
  * THEGRANITO PORTFOLIO - PROFESSIONAL JS
  * Version: 2.0
