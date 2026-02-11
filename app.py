@@ -1,186 +1,437 @@
-# app.py
-from flask import (
-    Flask, render_template, request,
-    jsonify, send_file, send_from_directory
-)
+"""
+==========================================
+THE GRANITO PORTFOLIO - MAIN APPLICATION
+Version: 2.0 Professional
+Author: Uttam Kumar
+==========================================
+"""
 
+from flask import (
+    Flask, render_template, request, jsonify, 
+    send_file, redirect, url_for, flash, session
+)
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_cors import CORS
 import os
 import json
 from datetime import datetime
+from functools import wraps
 
-from utils import log_visitor, get_visitor_count
-from config import DevelopmentConfig
+from config import Config
+from utils import sanitize_input, validate_email, log_error
+from visitor_tracker import track_visitor, get_visitor_stats
+
+# ==================== APP INITIALIZATION ====================
 
 app = Flask(__name__)
-app.config.from_object(DevelopmentConfig)
+app.config.from_object(Config)
+
+# Enable CORS
+CORS(app)
+
+# Rate Limiting
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+# ==================== CONSTANTS ====================
 
 DATA_DIR = "data"
 CONTACTS_FILE = os.path.join(DATA_DIR, "contacts.json")
+VISITORS_FILE = os.path.join(DATA_DIR, "visitors.json")
+RESUME_FILE = "resume/your_resume.pdf"
 
+# ==================== HELPER FUNCTIONS ====================
 
-def log_visitor(ip, user_agent):
-    # Your logging code here, e.g., save to DB or file
-    print(f"Visitor IP: {ip}, UA: {user_agent}")  # Replace with actual logic
-
-
-@app.route('/offline')
-def offline():
-    return render_template('offline.html')
+def load_json_file(filepath, default=None):
+    """Load JSON file with error handling"""
+    if default is None:
+        default = []
     
-
-# -------------------- Helpers --------------------
-
-def load_contacts():
-    if not os.path.exists(CONTACTS_FILE):
-        return []
+    if not os.path.exists(filepath):
+        return default
+    
     try:
-        with open(CONTACTS_FILE, "r", encoding="utf-8") as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             return json.load(f)
-    except json.JSONDecodeError:
-        return []
+    except json.JSONDecodeError as e:
+        log_error(f"JSON decode error in {filepath}: {e}")
+        return default
+    except Exception as e:
+        log_error(f"Error loading {filepath}: {e}")
+        return default
 
 
-def save_contact(data: dict) -> None:
-    os.makedirs(DATA_DIR, exist_ok=True)
-    contacts = load_contacts()
-    contacts.append(data)
-    with open(CONTACTS_FILE, "w", encoding="utf-8") as f:
-        json.dump(contacts, f, indent=2, ensure_ascii=False)
+def save_json_file(filepath, data):
+    """Save data to JSON file"""
+    try:
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return True
+    except Exception as e:
+        log_error(f"Error saving to {filepath}: {e}")
+        return False
 
 
-# -------------------- System Routes --------------------
+def require_admin(f):
+    """Decorator for admin-only routes"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('is_admin'):
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# ==================== BEFORE REQUEST ====================
+
+@app.before_request
+def before_request():
+    """Track visitors before each request"""
+    if request.endpoint == 'home':
+        ip = request.remote_addr or "127.0.0.1"
+        user_agent = request.headers.get("User-Agent", "Unknown")
+        track_visitor(ip, user_agent)
+
+
+# ==================== ERROR HANDLERS ====================
+
+@app.errorhandler(404)
+def not_found_error(error):
+    """Handle 404 errors"""
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    """Handle 500 errors"""
+    log_error(f"Internal server error: {error}")
+    return render_template('500.html'), 500
+
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Handle rate limit errors"""
+    return jsonify(error="Rate limit exceeded. Please try again later."), 429
+
+
+# ==================== STATIC ROUTES ====================
 
 @app.route("/favicon.ico")
 def favicon():
-    return send_from_directory(
-        os.path.join(app.root_path, "static/images"),
-        "favicon.ico",
-        mimetype="image/vnd.microsoft.icon"
+    """Serve favicon"""
+    return send_file(
+        os.path.join(app.root_path, "static/images/favicon.ico"),
+        mimetype="image/x-icon"
     )
-@app.before_request
-def track_visitors():
-    ip = request.remote_addr or "127.0.0.1"
-    user_agent = request.headers.get("User-Agent", "Unknown")
-    log_visitor(ip, user_agent)  # Positional args
+
 
 @app.route("/manifest.json")
 def manifest():
-    return send_from_directory(
-        app.static_folder,
-        "manifest.json",
+    """Serve PWA manifest"""
+    return send_file(
+        os.path.join(app.static_folder, "manifest.json"),
         mimetype="application/json"
     )
 
 
-@app.before_request
-def track_visitors():
-    if request.endpoint == "home":
-        log_visitor(
-            ip=request.remote_addr or "127.0.0.1",
-            user_agent=request.headers.get("User-Agent", "Unknown")
-        )
+@app.route("/robots.txt")
+def robots():
+    """Serve robots.txt for SEO"""
+    return send_file("static/robots.txt", mimetype="text/plain")
 
 
-# -------------------- Pages --------------------
+@app.route("/sitemap.xml")
+def sitemap():
+    """Serve sitemap for SEO"""
+    return send_file("static/sitemap.xml", mimetype="application/xml")
 
 
-@app.route("/") 
-def home(): 
-    return render_template( "index.html", visitor_count=get_visitor_count() )
+# ==================== MAIN PAGES ====================
+
+@app.route("/")
+def home():
+    """Homepage"""
+    stats = get_visitor_stats()
+    return render_template(
+        "index.html",
+        visitor_count=stats.get('total', 0),
+        today_count=stats.get('today', 0)
+    )
+
 
 @app.route("/about")
 def about():
+    """About page"""
     return render_template("about.html")
 
 
 @app.route("/projects")
 def projects():
-    return render_template("projects.html", projects=[
+    """Projects showcase page"""
+    projects_data = [
         {
             "id": 1,
-            "title": "Portfolio Website",
-            "description": "Personal portfolio built with Flask",
-            "tech": ["Python", "Flask", "HTML", "CSS", "JS"],
+            "title": "TheGranito Portfolio",
+            "description": "Professional portfolio website with PWA support, admin dashboard, and analytics",
+            "tech": ["Python", "Flask", "JavaScript", "Bootstrap", "PWA"],
+            "github": "https://github.com/uttamkumar95446-bot/TheGranito",
+            "live": "https://thegranito.onrender.com",
+            "image": "project1.jpg",
+            "featured": True
+        },
+        {
+            "id": 2,
+            "title": "E-Commerce Platform",
+            "description": "Full-stack e-commerce solution with payment integration",
+            "tech": ["Python", "Flask", "SQLite", "Stripe API"],
             "github": "#",
-            "live": "#"
+            "live": "#",
+            "image": "project2.jpg",
+            "featured": False
+        },
+        {
+            "id": 3,
+            "title": "Blog CMS",
+            "description": "Content management system for blogs with Markdown support",
+            "tech": ["Flask", "SQLAlchemy", "Markdown", "TinyMCE"],
+            "github": "#",
+            "live": "#",
+            "image": "project3.jpg",
+            "featured": False
         }
-    ])
-
-
-@app.route("/contact", methods=["GET", "POST"])
-def contact():
-    if request.method == "POST":
-        save_contact({
-            "name": request.form.get("name"),
-            "email": request.form.get("email"),
-            "subject": request.form.get("subject", "No Subject"),
-            "message": request.form.get("message"),
-            "timestamp": datetime.utcnow().isoformat()
-        })
-        return jsonify(success=True)
-
-    return render_template("contact.html")
-
-
-@app.route("/admin")
-def admin():
-    return render_template("admin.html", contacts=load_contacts())
+    ]
+    
+    return render_template("projects.html", projects=projects_data)
 
 
 @app.route("/blog")
 def blog():
-    return render_template("blog.html", posts=[
+    """Blog page"""
+    blog_posts = [
         {
             "id": 1,
             "title": "My Journey in Web Development",
-            "date": "2024-01-15",
+            "excerpt": "Starting my journey as a web developer and the lessons learned along the way...",
+            "content": "Full blog post content here...",
             "author": "Uttam Kumar",
-            "content": "Starting my journey with Flask..."
+            "date": "2024-01-15",
+            "tags": ["Web Development", "Career", "Learning"],
+            "image": "blog1.jpg"
+        },
+        {
+            "id": 2,
+            "title": "Building Progressive Web Apps with Flask",
+            "excerpt": "A comprehensive guide to creating PWAs using Python Flask framework...",
+            "content": "Full blog post content here...",
+            "author": "Uttam Kumar",
+            "date": "2024-01-20",
+            "tags": ["PWA", "Flask", "Tutorial"],
+            "image": "blog2.jpg"
         }
-    ])
+    ]
+    
+    return render_template("blog.html", posts=blog_posts)
+
+
+@app.route("/contact", methods=["GET", "POST"])
+@limiter.limit("10 per hour")
+def contact():
+    """Contact form page"""
+    if request.method == "POST":
+        try:
+            # Get form data
+            name = sanitize_input(request.form.get("name", ""))
+            email = request.form.get("email", "")
+            subject = sanitize_input(request.form.get("subject", "General Inquiry"))
+            message = sanitize_input(request.form.get("message", ""))
+            
+            # Validate
+            if not name or not email or not message:
+                return jsonify(success=False, error="All fields are required"), 400
+            
+            if not validate_email(email):
+                return jsonify(success=False, error="Invalid email address"), 400
+            
+            # Save contact
+            contact_data = {
+                "name": name,
+                "email": email,
+                "subject": subject,
+                "message": message,
+                "timestamp": datetime.utcnow().isoformat(),
+                "ip": request.remote_addr,
+                "status": "new"
+            }
+            
+            contacts = load_json_file(CONTACTS_FILE)
+            contacts.append(contact_data)
+            save_json_file(CONTACTS_FILE, contacts)
+            
+            return jsonify(success=True, message="Message sent successfully!")
+            
+        except Exception as e:
+            log_error(f"Contact form error: {e}")
+            return jsonify(success=False, error="Something went wrong"), 500
+    
+    return render_template("contact.html")
+
+
+@app.route("/offline")
+def offline():
+    """Offline page for PWA"""
+    return render_template("offline.html")
+
+
+# ==================== ADMIN ROUTES ====================
+
+@app.route("/admin/login", methods=["GET", "POST"])
+@limiter.limit("5 per minute")
+def admin_login():
+    """Admin login"""
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        
+        # Simple auth (use proper auth in production)
+        if username == app.config['ADMIN_USERNAME'] and password == app.config['ADMIN_PASSWORD']:
+            session['is_admin'] = True
+            session.permanent = True
+            return redirect(url_for('admin'))
+        else:
+            flash("Invalid credentials", "error")
+    
+    return render_template("admin_login.html")
+
+
+@app.route("/admin/logout")
+def admin_logout():
+    """Admin logout"""
+    session.pop('is_admin', None)
+    return redirect(url_for('home'))
+
+
+@app.route("/admin")
+@require_admin
+def admin():
+    """Admin dashboard"""
+    contacts = load_json_file(CONTACTS_FILE)
+    stats = get_visitor_stats()
+    
+    return render_template(
+        "admin.html",
+        contacts=contacts,
+        stats=stats
+    )
+
+
+@app.route("/admin/contacts/delete/<int:index>", methods=["POST"])
+@require_admin
+def delete_contact(index):
+    """Delete a contact"""
+    try:
+        contacts = load_json_file(CONTACTS_FILE)
+        if 0 <= index < len(contacts):
+            contacts.pop(index)
+            save_json_file(CONTACTS_FILE, contacts)
+            return jsonify(success=True)
+        return jsonify(success=False, error="Invalid index"), 400
+    except Exception as e:
+        log_error(f"Delete contact error: {e}")
+        return jsonify(success=False, error=str(e)), 500
+
+
+# ==================== API ROUTES ====================
+
+@app.route("/api/stats")
+def api_stats():
+    """Get visitor statistics"""
+    stats = get_visitor_stats()
+    return jsonify(stats)
+
+
+@app.route("/api/skills")
+def api_skills():
+    """Get skills data"""
+    skills = {
+        "technical": [
+            {"name": "Python", "level": 90},
+            {"name": "Flask", "level": 85},
+            {"name": "JavaScript", "level": 80},
+            {"name": "HTML/CSS", "level": 95},
+            {"name": "Bootstrap", "level": 88},
+            {"name": "Git", "level": 75}
+        ],
+        "soft": [
+            "Problem Solving",
+            "Communication",
+            "Teamwork",
+            "Time Management",
+            "Creativity"
+        ]
+    }
+    return jsonify(skills)
 
 
 @app.route("/download-resume")
 def download_resume():
-    resume_path = "resume/your_resume.pdf"
-    if not os.path.exists(resume_path):
+    """Download resume"""
+    if os.path.exists(RESUME_FILE):
+        return send_file(RESUME_FILE, as_attachment=True, download_name="Uttam_Kumar_Resume.pdf")
+    else:
         return jsonify(error="Resume not found"), 404
-    return send_file(resume_path, as_attachment=True)
 
 
-# -------------------- APIs --------------------
+# ==================== UTILITY ROUTES ====================
 
-@app.route("/api/skills")
-def skills():
-    return jsonify({
-        "technical": ["Python", "Flask", "HTML", "CSS", "JavaScript"],
-        "soft": ["Problem Solving", "Communication", "Teamwork"]
-    })
-
-
-@app.route("/api/stats")
-def stats():
-    return jsonify({
-        "total_visitors": get_visitor_count(),
-        "total_messages": len(load_contacts()),
-        "last_updated": datetime.utcnow().date().isoformat()
-    })
+@app.route("/search")
+def search():
+    """Search functionality"""
+    query = request.args.get('q', '')
+    # Implement search logic here
+    return render_template("search.html", query=query, results=[])
 
 
-# -------------------- Errors --------------------
-
-@app.errorhandler(404)
-def not_found(_):
-    return render_template("404.html"), 404
-
-
-@app.errorhandler(500)
-def server_error(_):
-    return render_template("500.html"), 500
+@app.route("/share")
+def share():
+    """Handle shared content from PWA"""
+    title = request.args.get('title', '')
+    text = request.args.get('text', '')
+    url = request.args.get('url', '')
+    
+    return render_template("share.html", title=title, text=text, url=url)
 
 
-# -------------------- Run --------------------
+# ==================== CONTEXT PROCESSORS ====================
+
+@app.context_processor
+def inject_globals():
+    """Inject global variables into templates"""
+    return {
+        'site_name': 'TheGranito',
+        'author': 'Uttam Kumar',
+        'current_year': datetime.now().year,
+        'is_admin': session.get('is_admin', False)
+    }
+
+
+# ==================== MAIN ====================
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
-
+    # Ensure data directories exist
+    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs('resume', exist_ok=True)
+    
+    # Run app
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_ENV") == "development"
+    
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=debug
+    )
