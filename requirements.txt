@@ -1,3 +1,39 @@
+# ==========================================
+# THE GRANITO PORTFOLIO - REQUIREMENTS
+# Python 3.9+
+# ==========================================
+
+# Core Framework
 Flask==3.0.0
-gunicorn==22.0.0
-requests==2.32.0
+Werkzeug==3.0.1
+
+# WSGI Server (Production)
+gunicorn==21.2.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Security & Rate Limiting
+Flask-Limiter==3.5.0
+Flask-Talisman==1.1.0
+
+# CORS Support
+Flask-CORS==4.0.0
+
+# Caching
+Flask-Caching==2.1.0
+
+# Date/Time Handling
+python-dateutil==2.8.2
+
+# HTTP Requests
+requests==2.31.0
+
+# HTML Sanitization
+bleach==6.1.0
+
+# Markdown Support (Optional)
+markdown==3.5.1
+
+# Production Server (Alternative)
+waitress==2.1.2
