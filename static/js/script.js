@@ -672,3 +672,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+window.addEventListener("load", function () {
+    window.scrollTo(0, 0);
+});
