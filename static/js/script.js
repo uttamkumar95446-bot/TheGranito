@@ -147,20 +147,19 @@
 
         setActiveLink() {
             const sections = document.querySelectorAll('section[id]');
-            const scrollPosition = window.scrollY + 100;
+            let current = "home";
 
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
+                const sectionTop = section.offsetTop - 150;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute("id");
+                }
+            });
 
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    this.navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
-                        }
-                    });
+            this.navLinks.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === "#" + current) {
+                    link.classList.add("active");
                 }
             });
         }
