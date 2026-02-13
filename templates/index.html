@@ -3,6 +3,10 @@
 {% block title %}Home - My Portfolio{% endblock %}
 
 {% block content %}
+<div class="visitor-section">
+  <h3>Total Visitors: <span id="total-visitors">0</span></h3>
+  <p>Today: <span id="today-visitors">0</span></p>
+</div>
 <!-- Hero Section -->
 
 <section id="home" class="hero-section min-vh-100 d-flex align-items-center">
@@ -323,11 +327,6 @@ fetch('/api/stats')
     .catch(error => console.log('Stats loading error:', error));
 </script>
 {% endblock %}
-<div class="visitor-section">
-  <h3>Total Visitors: <span id="total-visitors">0</span></h3>
-  <p>Today: <span id="today-visitors">0</span></p>
-</div>
-
 <script>
 fetch('/api/stats')
   .then(r => r.json())
