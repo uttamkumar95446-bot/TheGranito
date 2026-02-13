@@ -45,6 +45,27 @@ VISITORS_FILE = os.path.join(DATA_DIR, "visitors.json")
 RESUME_FILE = "resume/your_resume.pdf"
 
 # ==================== HELPER FUNCTIONS ====================
+def get_stats():
+    try:
+        with open("visitors.json", "r") as f:
+            data = json.load(f)
+    except:
+        return {"total": 0, "today": 0}
+
+    today = datetime.date.today().isoformat()
+
+    total = len(data)
+
+    today_count = sum(
+        1 for v in data
+        if isinstance(v, dict) and v.get("date") == today
+    )
+
+    return {
+        "total": total,
+        "today": today_count
+    }
+
 
 def load_json_file(filepath, default=None):
     """Load JSON file with error handling"""
