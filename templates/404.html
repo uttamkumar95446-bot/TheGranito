@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - 404 Error{% endblock %}
+
+{% block content %}
+<section class="error-page min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <!-- 404 Animation -->
+                <div class="error-animation mb-5" data-aos="zoom-in">
+                    <div class="error-number">
+                        <span class="four">4</span>
+                        <span class="zero-container">
+                            <span class="zero">0</span>
+                            <div class="searching-eye">
+                                <div class="eye">
+                                    <div class="pupil"></div>
+                                </div>
+                            </div>
+                        </span>
+                        <span class="four">4</span>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-content" data-aos="fade-up" data-aos-delay="200">
+                    <h1 class="display-6 fw-bold text-primary mb-3">
+                        Oops! Page Not Found
+                    </h1>
+                    <h2 class="h4 text-muted mb-4">
+                        यह page exist नहीं करता या हट दिया गया है
+                    </h2>
+                    <p class="lead text-muted mb-5">
+                        जो page आप ढूंढ रहे हैं वो यहाँ नहीं मिला। हो सकता है URL गलत हो 
+                        या page को दूसरी जगह move कर दिया गया हो।
+                    </p>
+
+                    <!-- Action Buttons -->
+                    <div class="error-actions d-flex flex-wrap justify-content-center gap-3 mb-5">
+                        <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home"></i> Go Home
+                        </a>
+                        <button onclick="history.back()" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Go Back
+                        </button>
+                        <a href="{{ url_for('contact') }}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-envelope"></i> Contact Us
+                        </a>
+                    </div>
+
+                    <!-- Search Box -->
+                    <div class="error-search mb-5">
+                        <h5 class="mb-3">या कुछ search करें:</h5>
+                        <form class="row g-3 justify-content-center">
+                            <div class="col-md-6">
+                                <div class="input-group input-group-lg">
+                                    <input type="text" class="form-control" placeholder="Search for pages, projects, or content...">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Popular Links -->
+                    <div class="popular-links">
+                        <h5 class="mb-3">Popular Pages:</h5>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <a href="{{ url_for('about') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-user"></i> About Me
+                            </a>
+                            <a href="{{ url_for('projects') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-project-diagram"></i> My Projects
+                            </a>
+                            <a href="{{ url_for('blog') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-blog"></i> Blog
+                            </a>
+                            <a href="{{ url_for('download_resume') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download"></i> Resume
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="floating-elements">
+            <div class="floating-element" style="left: 10%; top: 20%; animation-delay: 0s;">
+                <i class="fas fa-code text-primary"></i>
+            </div>
+            <div class="floating-element" style="right: 15%; top: 30%; animation-delay: 1s;">
+                <i class="fas fa-laptop text-success"></i>
+            </div>
+            <div class="floating-element" style="left: 20%; bottom: 30%; animation-delay: 2s;">
+                <i class="fas fa-mobile-alt text-warning"></i>
+            </div>
+            <div class="floating-element" style="right: 10%; bottom: 20%; animation-delay: 3s;">
+                <i class="fas fa-database text-info"></i>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.error-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.error-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.zero-container {
+    position: relative;
+    margin: 0 20px;
+}
+
+.zero {
+    display: inline-block;
+}
+
+.searching-eye {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+}
+
+.eye {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: blink 3s infinite;
+}
+
+.pupil {
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border-radius: 50%;
+    animation: look-around 4s infinite;
+}
+
+@keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
+@keyframes look-around {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-15px); }
+    50% { transform: translateX(15px); }
+    75% { transform: translateX(-10px); }
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.error-content {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.error-actions .btn {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.error-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.error-search .input-group {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.popular-links .btn {
+    margin: 2px;
+    transition: all 0.3s ease;
+}
+
+.popular-links .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .error-number {
+        font-size: 4rem;
+    }
+    
+    .error-content {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .floating-elements {
+        display: none;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add some interactive effects
+document.addEventListener('DOMContentLoaded', function() {
+    // Random floating animation delays
+    document.querySelectorAll('.floating-element').forEach((element, index) => {
+        element.style.animationDelay = (Math.random() * 2) + 's';
+    });
+    
+    // Search form functionality
+    document.querySelector('.error-search form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const searchTerm = this.querySelector('input').value;
+        if (searchTerm.trim()) {
+            // Redirect to home with search parameter
+            window.location.href = `{{ url_for('home') }}?search=${encodeURIComponent(searchTerm)}`;
+        }
+    });
+});
+</script>
+{% endblock %}
