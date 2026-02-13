@@ -2,11 +2,7 @@
 
 {% block title %}Home - My Portfolio{% endblock %}
 
-{% block content %}
-<div class="visitor-section">
-  <h3>Total Visitors: <span id="total-visitors">0</span></h3>
-  <p>Today: <span id="today-visitors">0</span></p>
-</div>
+
 <!-- Hero Section -->
 
 <section id="home" class="hero-section min-vh-100 d-flex align-items-center">
@@ -60,10 +56,9 @@
             </div>
 
 <div class="col-lg-6 text-center" data-aos="fade-left">
-    <img src="{{ url_for('static', filename='images/profile.jpg') }}" 
-         alt="Profile" 
-         class="img-fluid rounded-circle shadow-lg profile-image"
-         style="width: 400px; height: 400px; object-fit: cover;">
+     <img src="{{ url_for('static', filename='images/profile.jpg') }}"
+         class="profile-img shadow"
+         alt="Profile">
 </div>
 
     
