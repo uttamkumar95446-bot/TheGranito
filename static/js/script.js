@@ -146,23 +146,19 @@
         }
 
         setActiveLink() {
-            const sections = document.querySelectorAll('section[id]');
-            let current = "home";
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 150;
-                if (window.scrollY >= sectionTop) {
-                    current = section.getAttribute("id");
-                }
-            });
-
+            const currentPath = window.location.pathname;
+        
             this.navLinks.forEach(link => {
                 link.classList.remove("active");
-                if (link.getAttribute("href") === "#" + current) {
+        
+                const linkPath = new URL(link.href).pathname;
+        
+                if (linkPath === currentPath) {
                     link.classList.add("active");
                 }
             });
         }
+
 
         setupSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
