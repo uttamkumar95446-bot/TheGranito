@@ -2,7 +2,7 @@
 
 {% block title %}Home - My Portfolio{% endblock %}
 
-
+{% block content %}
 <!-- Hero Section -->
 
 <section id="home" class="hero-section min-vh-100 d-flex align-items-center">
@@ -303,7 +303,7 @@
 </section>
 
 
-{% endblock %}
+
 
 {% block extra_js %}
 <script>
@@ -312,5 +312,4 @@ AOS.init({
     duration: 1000,
     once: true
 });
-
-// Update visitor count
+{% endblock %}
