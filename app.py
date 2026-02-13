@@ -174,7 +174,7 @@ def sitemap():
 
 # ==================== MAIN PAGES ====================
 
-@app.route("/")
+@app.route("/", methods=["GET", "HEAD"])
 def home():
     """Homepage"""
     stats = get_visitor_stats()
