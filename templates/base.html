@@ -45,6 +45,16 @@
 <main style="margin-top:80px;">
     {% block content %}{% endblock %}
 </main>
+<!-- Visitor Stats Section -->
+<div class="bg-light py-3 border-top">
+    <div class="container text-center">
+        <small class="text-muted">
+            👀 Total Visitors: <span id="total-visitors">0</span> |
+            📅 Today: <span id="today-visitors">0</span>
+        </small>
+    </div>
+</div>
+
 
 <footer class="bg-dark text-white text-center py-4 mt-5">
     <p class="mb-0">© 2026 TheGranito | Built with Flask & Bootstrap</p>
@@ -57,6 +67,15 @@
 
 <script>
 AOS.init({ duration: 800, once: true });
+</script>
+<script>
+fetch('/api/stats')
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('total-visitors').textContent = data.total || data.total_visitors || 0;
+    document.getElementById('today-visitors').textContent = data.today || 0;
+  })
+  .catch(err => console.log("Visitor stats error:", err));
 </script>
 
 {% block extra_js %}{% endblock %}
